@@ -20,22 +20,22 @@ public class Post {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "title")
+    @Column(name = "post_title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "post_content")
     private String content;
 
-    @Column(name = "created_at")
+    @Column(name = "post_created_at")
     private LocalDate createdAt;
 
-    @Column(name = "update_at")
+    @Column(name = "post_update_at")
     private LocalDate updateAt;
 
-    @Column(name = "rating")
+    @Column(name = "post_rating")
     private double rating;
 
-    @Column(name = "images")
+    @Column(name = "post_images")
     private List<String> images;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,

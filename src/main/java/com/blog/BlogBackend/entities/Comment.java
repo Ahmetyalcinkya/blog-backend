@@ -19,10 +19,10 @@ public class Comment {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "content")
+    @Column(name = "comment_content")
     private String content;
 
-    @Column(name = "created_at")
+    @Column(name = "comment_created_at")
     private LocalDate createdAt;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,

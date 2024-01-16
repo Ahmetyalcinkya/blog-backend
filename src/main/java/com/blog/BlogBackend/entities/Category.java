@@ -20,13 +20,13 @@ public class Category {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "title")
+    @Column(name = "category_title")
     private String title;
 
-    @Column(name = "image")
+    @Column(name = "category_image")
     private String image;
 
-    @Column(name = "rating")
+    @Column(name = "category_rating")
     private double rating;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
