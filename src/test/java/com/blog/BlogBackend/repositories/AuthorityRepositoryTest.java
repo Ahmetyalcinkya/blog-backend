@@ -20,12 +20,13 @@ class AuthorityRepositoryTest {
 
     @Test
     void findByAuthority() {
-        Optional<Authority> authority = authorityRepository.findByAuthority("USER");
-        assertNotNull(authority.get());
+        Authority authority = authorityRepository.findByAuthority("USER");
+        assertNotNull(authority);
+        System.out.println(authority.getAuthority());
     }
     @Test
     void findByAuthorityFail() {
-        Optional<Authority> authority = authorityRepository.findByAuthority("STORE");
-        assertEquals(Optional.empty(), authority);
+        Authority authority = authorityRepository.findByAuthority("STORE");
+        assertEquals(null, authority);
     }
 }

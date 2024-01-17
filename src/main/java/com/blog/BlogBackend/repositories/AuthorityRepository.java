@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
-    @Query("SELECT a FROM Authority a WHERE a.authority = :authority")
-    Optional<Authority> findByAuthority(String authority);
+    @Query(value = "SELECT a.* FROM blog.authority AS a WHERE a.authority = :authority", nativeQuery = true)
+    Authority findByAuthority(String authority);
 }
