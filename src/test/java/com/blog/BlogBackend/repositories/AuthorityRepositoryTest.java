@@ -19,14 +19,15 @@ class AuthorityRepositoryTest {
     }
 
     @Test
-    void findByAuthority() {
+    void findByAuthority() {  //TODO WARNING!!!!!
         Authority authority = authorityRepository.findByAuthority("USER");
         assertNotNull(authority);
         System.out.println(authority.getAuthority());
     }
     @Test
-    void findByAuthorityFail() {
+    void findByAuthorityFail() {  //TODO WARNING!!!!!
         Authority authority = authorityRepository.findByAuthority("STORE");
-        assertEquals(null, authority);
+        System.out.println(authority.getAuthority());
+        assertNull(authority.getAuthority());
     }
 }

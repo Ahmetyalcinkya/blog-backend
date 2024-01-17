@@ -5,5 +5,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record PostResponse(long id, String title, String content, LocalDate createdAt, LocalDate updateAt,
-                           double rating, List<String> images) {
+                           double rating, List<String> images, long categoryID, long userID, String userName,
+                           String userSurname, String userPicture, String categoryTitle, String categoryRating) {
 }
