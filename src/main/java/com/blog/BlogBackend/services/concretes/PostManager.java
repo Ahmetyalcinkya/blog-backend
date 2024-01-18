@@ -8,10 +8,11 @@ import com.blog.BlogBackend.repositories.PostRepository;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Service
 public class PostManager implements PostService {
 
     private PostRepository postRepository;

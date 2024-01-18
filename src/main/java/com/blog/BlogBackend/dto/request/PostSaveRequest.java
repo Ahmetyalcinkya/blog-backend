@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostSaveRequest {
+public class PostSaveRequest { //TODO WARNING!!!!!
     private String title;
     private String content;
     private double rating;

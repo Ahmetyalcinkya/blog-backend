@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostUpdateRequest {
+public class PostUpdateRequest { //TODO WARNING!!!!!
     private long id;
     private String title;
     private String content;
