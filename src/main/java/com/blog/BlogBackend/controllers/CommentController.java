@@ -20,8 +20,8 @@ public class CommentController {
     }
     @GetMapping("/title")
     @ResponseBody
-    public List<CommentResponse> getCommentsByTitle(@RequestParam(name = "filter", required = false) String title){
-        return commentService.getCommentsByTitle(title);
+    public List<CommentResponse> getCommentsByTitle(@RequestParam(name = "filter", required = false) String postTitle){
+        return commentService.getCommentsByTitle(postTitle);
     }
     @GetMapping("/user")
     @ResponseBody

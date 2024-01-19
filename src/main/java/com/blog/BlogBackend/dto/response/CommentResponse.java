@@ -1,6 +1,15 @@
 package com.blog.BlogBackend.dto.response;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record CommentResponse(long id, String content, LocalDate createdAt) {
+import java.time.LocalDate;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CommentResponse {
+    private long id;
+    private String content;
+    private LocalDate createdAt;
 }

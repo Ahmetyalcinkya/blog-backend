@@ -1,10 +1,28 @@
 package com.blog.BlogBackend.dto.response;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.List;
-
-public record PostResponse(long id, String title, String content, LocalDate createdAt, LocalDate updateAt,
-                           double rating, List<String> images, long categoryID, long userID, String userName,
-                           String userSurname, String userPicture, String categoryTitle, String categoryRating) {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PostResponse {
+    private long id;
+    private String title;
+    private String content;
+    private LocalDate createdAt;
+    private LocalDate updateAt;
+    private double rating;
+    private List<String> images;
+    private long categoryID;
+    private long userID;
+    private String userName;
+    private String userSurname;
+    private String userPicture;
+    private String categoryTitle;
+    private String categoryRating;
 }

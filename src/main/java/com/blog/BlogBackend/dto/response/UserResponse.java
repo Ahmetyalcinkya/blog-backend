@@ -1,6 +1,18 @@
 package com.blog.BlogBackend.dto.response;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record UserResponse(long id, String name, String surname, String email, String profilePicture, LocalDate registrationDate) {
+import java.time.LocalDate;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserResponse {
+    private long id;
+    private String name;
+    private String surname;
+    private String email;
+    private String profilePicture;
+    private LocalDate registrationDate;
 }
