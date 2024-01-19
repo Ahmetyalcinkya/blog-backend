@@ -16,5 +16,5 @@ public class PostUpdateRequest { //TODO WARNING!!!!!
     private String title;
     private String content;
     private List<String> images;
-    private Category category;
+    private long categoryID;
 }

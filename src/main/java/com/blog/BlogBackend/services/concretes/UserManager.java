@@ -49,6 +49,7 @@ public class UserManager implements UserService {
     @Override
     public UserResponse saveUser(UserSaveRequest userSaveRequest) {
         User user = modelMapperService.forRequest().map(userSaveRequest, User.class);
+        userRepository.save(user);
         return modelMapperService.forResponse().map(user, UserResponse.class);
     }
 

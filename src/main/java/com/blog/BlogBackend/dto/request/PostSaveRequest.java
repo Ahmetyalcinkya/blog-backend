@@ -17,6 +17,6 @@ public class PostSaveRequest { //TODO WARNING!!!!!
     private String content;
     private double rating;
     private List<String> images;
-    private User user;
-    private Category category;
+    private long userID;
+    private long categoryID;
 }

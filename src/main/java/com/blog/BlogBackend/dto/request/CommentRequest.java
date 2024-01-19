@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentRequest {
     private String content;
+    private long postID;
+    private long userID;
 }

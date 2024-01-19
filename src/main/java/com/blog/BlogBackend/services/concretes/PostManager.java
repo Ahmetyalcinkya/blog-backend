@@ -65,12 +65,14 @@ public class PostManager implements PostService {
     @Override
     public PostResponse savePost(PostSaveRequest postSaveRequest) {
         Post post = modelMapperService.forRequest().map(postSaveRequest, Post.class);
+        postRepository.save(post);
         return modelMapperService.forResponse().map(post, PostResponse.class);
     }
 
     @Override
     public PostResponse updatePost(PostUpdateRequest postUpdateRequest) {
         Post post = modelMapperService.forRequest().map(postUpdateRequest, Post.class);
+        postRepository.save(post);
         return modelMapperService.forResponse().map(post, PostResponse.class);
     }
 

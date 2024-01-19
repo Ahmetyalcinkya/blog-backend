@@ -39,12 +39,14 @@ public class CategoryManager implements CategoryService {
     @Override
     public CategoryResponse saveCategory(CategorySaveRequest categoryRequest) {
         Category category = modelMapperService.forRequest().map(categoryRequest, Category.class);
+        categoryRepository.save(category);
         return Converter.getCategory(category);
     }
 
     @Override
     public CategoryResponse updateCategory(CategoryUpdateRequest categoryUpdateRequest) {
         Category category = modelMapperService.forRequest().map(categoryUpdateRequest, Category.class);
+        categoryRepository.save(category);
         return Converter.getCategory(category);
     }
 
