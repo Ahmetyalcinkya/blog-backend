@@ -3,25 +3,39 @@ package com.blog.BlogBackend.services.concretes;
 import com.blog.BlogBackend.dto.request.PostSaveRequest;
 import com.blog.BlogBackend.dto.request.PostUpdateRequest;
 import com.blog.BlogBackend.dto.response.PostResponse;
+import com.blog.BlogBackend.dto.response.UserResponse;
+import com.blog.BlogBackend.entities.Category;
 import com.blog.BlogBackend.entities.Post;
+import com.blog.BlogBackend.entities.User;
 import com.blog.BlogBackend.repositories.PostRepository;
+import com.blog.BlogBackend.repositories.UserRepository;
+import com.blog.BlogBackend.services.abstracts.CategoryService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
+import com.blog.BlogBackend.services.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class PostManager implements PostService {
 
     private PostRepository postRepository;
     private ModelMapperService modelMapperService;
+    private CategoryService categoryService;
+    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public PostManager(PostRepository postRepository, ModelMapperService modelMapperService) {
+    public PostManager(PostRepository postRepository, ModelMapperService modelMapperService,
+                       CategoryService categoryService, UserRepository userRepository, UserService userService) {
         this.postRepository = postRepository;
         this.modelMapperService = modelMapperService;
+        this.categoryService = categoryService;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -64,9 +78,18 @@ public class PostManager implements PostService {
 
     @Override
     public PostResponse savePost(PostSaveRequest postSaveRequest) {
-        Post post = modelMapperService.forRequest().map(postSaveRequest, Post.class);
-        postRepository.save(post);
-        return modelMapperService.forResponse().map(post, PostResponse.class);
+//        String email =  "getAuthenticatedUser()";
+//        Optional<User> user = userRepository.findUserByEmail(email);
+//        if (user.isPresent()){
+            Category category = categoryService.getCategoryByID(postSaveRequest.getCategoryID());
+
+            Post post = modelMapperService.forRequest().map(postSaveRequest, Post.class);
+            post.setCategory(category);
+//            post.setUser(user);
+            postRepository.save(post);
+            return modelMapperService.forResponse().map(post, PostResponse.class);
+//        }
+//        throw new RuntimeException(); //TODO Throw exception
     }
 
     @Override

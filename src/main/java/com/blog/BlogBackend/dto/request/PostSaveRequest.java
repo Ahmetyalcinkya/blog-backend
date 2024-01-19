@@ -17,6 +17,6 @@ public class PostSaveRequest { //TODO WARNING!!!!!
     private String content;
     private double rating;
     private List<String> images;
-    private long userID;
+    private long userID; //TODO After authentication added this field should be deleted!
     private long categoryID;
 }

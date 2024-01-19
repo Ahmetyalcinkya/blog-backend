@@ -8,13 +8,18 @@ import com.blog.BlogBackend.repositories.UserRepository;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserManager implements UserService {
+public class UserManager implements UserService,UserDetailsService {
 
     private UserRepository userRepository;
     private ModelMapperService modelMapperService;
@@ -69,9 +74,13 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public String getAuthenticatedUser() { //TODO After security initialized
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        return authentication.getName();
-        return null;
+    public String getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new RuntimeException("")); //TODO Throw exception -> User not valid
     }
 }

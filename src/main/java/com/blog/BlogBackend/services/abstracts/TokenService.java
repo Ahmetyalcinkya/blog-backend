@@ -1,9 +1,10 @@
 package com.blog.BlogBackend.services.abstracts;
 
 import com.blog.BlogBackend.entities.Token;
+import org.springframework.security.core.Authentication;
 
-public interface TokenService { //TODO TokenManager
+public interface TokenService {
 
-    String generateJwtToken(/*TODO Spring core -> Authentication authentication*/);
+    String generateJwtToken(Authentication authentication);
     Token saveToken(Token jwtToken);
 }
