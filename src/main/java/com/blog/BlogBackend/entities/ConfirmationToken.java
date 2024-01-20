@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -23,13 +23,13 @@ public class ConfirmationToken {
     private String emailToken;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "confirmed_at")
-    private LocalDate confirmedAt;
+    private LocalDateTime confirmedAt;
 
     @Column(name = "expires_at")
-    private LocalDate expiresAt;
+    private LocalDateTime expiresAt;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH})

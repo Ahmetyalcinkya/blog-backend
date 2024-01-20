@@ -26,16 +26,11 @@ public class UserController {
     public UserResponse getUserByID(@PathVariable long id){
         return userService.getUserByID(id);
     }
-    @GetMapping("/email")
-    @ResponseBody
-    public UserResponse getUserByEmail(@RequestParam(name = "filter", required = false) String email){
-        return userService.getUserByEmail(email);
-    }
-    @PostMapping("/")
+    @PostMapping("/admin/saveUser")
     public UserResponse saveUser(@RequestBody UserSaveRequest userSaveRequest){
         return userService.saveUser(userSaveRequest);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/deleteUser/{id}")
     public UserResponse deleteUser(@PathVariable long id){
         return userService.deleteUser(id);
     }

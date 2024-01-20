@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,6 +16,5 @@ public class PostSaveRequest { //TODO WARNING!!!!!
     private String content;
     private double rating;
     private List<String> images;
-    private long userID; //TODO After authentication added this field should be deleted!
     private long categoryID;
 }

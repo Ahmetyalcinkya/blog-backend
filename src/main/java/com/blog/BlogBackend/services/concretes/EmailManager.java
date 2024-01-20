@@ -35,8 +35,8 @@ public class EmailManager implements EmailService {
             javaMailSender.send(mimeMessage);
             return "Email sent!"; //TODO Constants
         }catch (Exception ex){
-            //TODO Throw exception
-            throw new RuntimeException();
+            //TODO Throw exception D
+            throw new RuntimeException("D");
         }
     }
 }

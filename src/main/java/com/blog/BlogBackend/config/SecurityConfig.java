@@ -1,16 +1,17 @@
 package com.blog.BlogBackend.config;
 
-import com.blog.BlogBackend.utils.RSAKeyProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.blog.BlogBackend.utils.RSAKeyProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -90,7 +91,30 @@ public class SecurityConfig {
         security.cors().configurationSource(corsConfigurationSource());
         return security
                 .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> {}) //TODO AuthorizeHttps
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/swagger-ui/**").hasAuthority("AUTHORITY_ADMIN");
+                    auth.requestMatchers("/authority").permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"/auth/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/auth/**").permitAll();
+
+                    auth.requestMatchers(HttpMethod.GET,"/comments/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/comments/").hasAuthority("AUTHORITY_USER");
+                    auth.requestMatchers(HttpMethod.DELETE,"/comments/**").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
+                    auth.requestMatchers("/comments/admin/**").hasAuthority("AUTHORITY_ADMIN");
+
+                    auth.requestMatchers(HttpMethod.GET,"/users/**").permitAll();
+                    auth.requestMatchers("/users/admin/**").hasAuthority("AUTHORITY_ADMIN");
+
+                    auth.requestMatchers("/categories").permitAll();
+                    auth.requestMatchers("/categories/admin/**").hasAuthority("AUTHORITY_ADMIN");
+
+                    auth.requestMatchers(HttpMethod.GET,"/posts/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/posts/**").hasAuthority("AUTHORITY_USER");
+                    auth.requestMatchers(HttpMethod.PUT,"/posts/**").hasAuthority("AUTHORITY_USER");
+                    auth.requestMatchers(HttpMethod.DELETE,"/posts/**").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
+                    auth.requestMatchers("/posts/admin/**").hasAuthority("AUTHORITY_ADMIN");
+                    auth.anyRequest().authenticated();
+                })
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .build();
     }

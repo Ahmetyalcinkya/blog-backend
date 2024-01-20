@@ -40,15 +40,15 @@ public class UserManager implements UserService,UserDetailsService {
 
     @Override
     public UserResponse getUserByID(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("")); //TODO Throw exception
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("I")); //TODO Throw exception I
 
         return modelMapperService.forResponse().map(user, UserResponse.class);
     }
 
     @Override
-    public UserResponse getUserByEmail(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new RuntimeException("")); //TODO Throw exception
-        return modelMapperService.forResponse().map(user, UserResponse.class);
+    public void getUserByEmail(String email) {
+        boolean userExist = userRepository.findUserByEmail(email).isPresent();
+        if(userExist) throw new RuntimeException("J"); //TODO Throw exception -> User already exist J
     }
 
     @Override
@@ -81,6 +81,6 @@ public class UserManager implements UserService,UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(username).orElseThrow(() -> new RuntimeException("")); //TODO Throw exception -> User not valid
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new RuntimeException("K")); //TODO Throw exception -> User not valid K
     }
 }

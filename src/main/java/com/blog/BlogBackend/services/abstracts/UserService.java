@@ -11,7 +11,7 @@ public interface UserService {
 
     List<UserResponse> getAllUsers();
     UserResponse getUserByID(long id);
-    UserResponse getUserByEmail(String email);
+    void getUserByEmail(String email);
     UserResponse saveUser(UserSaveRequest userSaveRequest);
     void updateUser(Token token, User user);
     UserResponse deleteUser(long id);

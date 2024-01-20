@@ -72,24 +72,24 @@ public class PostManager implements PostService {
 
     @Override
     public PostResponse getPostByID(long id) { //TODO WARNING!!!!!
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("")); //todo throw excepiton
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("E")); //TODO Throw excepiton E
         return modelMapperService.forResponse().map(post, PostResponse.class);
     }
 
     @Override
     public PostResponse savePost(PostSaveRequest postSaveRequest) {
-//        String email =  "getAuthenticatedUser()";
-//        Optional<User> user = userRepository.findUserByEmail(email);
-//        if (user.isPresent()){
+        String email =  userService.getAuthenticatedUser();
+        Optional<User> user = userRepository.findUserByEmail(email);
+        if (user.isPresent()){
             Category category = categoryService.getCategoryByID(postSaveRequest.getCategoryID());
 
             Post post = modelMapperService.forRequest().map(postSaveRequest, Post.class);
             post.setCategory(category);
-//            post.setUser(user);
+            post.setUser(user.get());
             postRepository.save(post);
             return modelMapperService.forResponse().map(post, PostResponse.class);
-//        }
-//        throw new RuntimeException(); //TODO Throw exception
+        }
+        throw new RuntimeException("G"); //TODO Throw exception G
     }
 
     @Override

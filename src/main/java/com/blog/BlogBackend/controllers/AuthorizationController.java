@@ -23,7 +23,7 @@ public class AuthorizationController {
         return authenticationService.register(userSaveRequest.getName(), userSaveRequest.getSurname(),
                 userSaveRequest.getEmail(), userSaveRequest.getPassword(), userSaveRequest.getProfilePicture());
     }
-    @PostMapping("/confirm")
+    @GetMapping("/confirm")
     @ResponseBody
     public String confirm(@RequestParam(name = "emailToken") String emailToken){
         return authenticationService.confirmationEmailToken(emailToken);

@@ -5,7 +5,7 @@ import com.blog.BlogBackend.repositories.ConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,6 +24,6 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.findByConfirmationToken(emailToken);
     }
     public void setConfirmedAt(String emailToken){
-        confirmationTokenRepository.updateConfirmedAt(emailToken, LocalDate.now());
+        confirmationTokenRepository.updateConfirmedAt(emailToken, LocalDateTime.now());
     }
 }

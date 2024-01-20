@@ -42,7 +42,7 @@ public class CommentManager implements CommentService {
 
     @Override
     public Comment getCommentByID(long id) { //TODO WARNING!!!!!
-        return commentRepository.findById(id).orElseThrow(() -> new RuntimeException("")); //TODO Throw exception
+        return commentRepository.findById(id).orElseThrow(() -> new RuntimeException("C")); //TODO Throw exception C
     }
 
     @Override

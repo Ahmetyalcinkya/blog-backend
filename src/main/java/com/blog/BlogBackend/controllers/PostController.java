@@ -37,7 +37,7 @@ public class PostController {
     public List<PostResponse> getAllPosts(){
         return postService.getAllPosts();
     }
-    @GetMapping("/post/{id}")
+    @GetMapping("/admin/getPostsById/{id}")
     public PostResponse getPostByID(@PathVariable long id){
         return postService.getPostByID(id);
     }

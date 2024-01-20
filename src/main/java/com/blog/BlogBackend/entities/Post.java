@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -27,10 +27,10 @@ public class Post {
     private String content;
 
     @Column(name = "post_created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "post_update_at")
-    private LocalDate updateAt;
+    private LocalDateTime updateAt;
 
     @Column(name = "post_rating")
     private double rating;

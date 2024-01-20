@@ -26,15 +26,15 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-    @PostMapping("/")
+    @PostMapping("/admin/saveCategory")
     public CategoryResponse saveCategory(@RequestBody CategorySaveRequest categorySaveRequest){
         return categoryService.saveCategory(categorySaveRequest);
     }
-    @PutMapping("/")
+    @PutMapping("/admin/updateCategory")
     public CategoryResponse updateCategory(@RequestBody CategoryUpdateRequest categoryUpdateRequest){
         return categoryService.updateCategory(categoryUpdateRequest);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/deleteCategory/{id}")
     public CategoryResponse deleteCategory(@PathVariable long id){
         return categoryService.deleteCategory(id);
     }

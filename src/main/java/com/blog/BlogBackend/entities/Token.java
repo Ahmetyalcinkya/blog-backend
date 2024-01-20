@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -23,5 +23,5 @@ public class Token {
     private String token;
 
     @Column(name = "expiry_date")
-    private LocalDate expiryDate;
+    private LocalDateTime expiryDate;
 }

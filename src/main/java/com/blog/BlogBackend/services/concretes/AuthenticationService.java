@@ -2,6 +2,7 @@ package com.blog.BlogBackend.services.concretes;
 
 import com.blog.BlogBackend.dto.response.LoginResponse;
 import com.blog.BlogBackend.dto.response.UserResponse;
+import com.blog.BlogBackend.entities.Authority;
 import com.blog.BlogBackend.entities.ConfirmationToken;
 import com.blog.BlogBackend.entities.Token;
 import com.blog.BlogBackend.entities.User;
@@ -19,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,11 +55,10 @@ public class AuthenticationService {
     @Transactional
     public UserResponse register(String name, String surname, String email, String password, String profilePicture){
 
-        String foundEmail = userService.getUserByEmail(email).getEmail();
-        if (foundEmail != null) throw new RuntimeException(); //TODO Throw exception
+        userService.getUserByEmail(email);
 
         String encodedPassword = passwordEncoder.encode(password);
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         String emailToken = UUID.randomUUID().toString();
 
         User user = new User();
@@ -68,7 +68,8 @@ public class AuthenticationService {
         user.setPassword(encodedPassword);
         user.setProfilePicture(profilePicture);
         user.setRegistrationDate(date);
-        user.setAuthority(authorityRepository.findByAuthority("USER"));
+        Authority authority = authorityRepository.findByAuthority("USER");
+        user.setAuthority(authority);
         userRepository.save(user);
 
         ConfirmationToken confirmationToken = new ConfirmationToken();
@@ -91,14 +92,14 @@ public class AuthenticationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken(emailToken)
                 .orElseThrow(() ->
-                        new RuntimeException("")); //TODO Throw exception -> Token not found
+                        new RuntimeException("Confirmation Token not found!")); //TODO Throw exception -> Token not found
         if (confirmationToken.getConfirmedAt() != null){
-            throw new RuntimeException(""); //TODO Throw exception -> Email confirmed
+            throw new RuntimeException("Email already confirmed!"); //TODO Throw exception -> Email confirmed
         }
-        LocalDate expiresAt = confirmationToken.getExpiresAt();
+        LocalDateTime expiresAt = confirmationToken.getExpiresAt();
 
-        if(expiresAt.isAfter(LocalDate.now())){
-            throw new RuntimeException(""); //TODO Throw exception -> Token expired
+        if(LocalDateTime.now().isAfter(expiresAt)){
+            throw new RuntimeException("Token expired!"); //TODO Throw exception -> Token expired
         }
         confirmationTokenService.setConfirmedAt(emailToken);
 
@@ -114,7 +115,7 @@ public class AuthenticationService {
             String token = tokenService.generateJwtToken(authentication);
 
             User foundUser = setUserToken(email);
-            LocalDate expiry = LocalDate.now().plusDays(1);
+            LocalDateTime expiry = LocalDateTime.now().plusDays(1);
             Token userToken = new Token();
             userToken.setToken(token);
             userToken.setExpiryDate(expiry);
@@ -124,7 +125,7 @@ public class AuthenticationService {
             return new LoginResponse(token);
         } catch (Exception ex){
             ex.printStackTrace();
-            throw new RuntimeException(""); //TODO Throw exception -> User not found
+            throw new RuntimeException("A"); //TODO Throw exception -> User not found A
         }
     }
     public User setUserToken(String email){
@@ -133,6 +134,6 @@ public class AuthenticationService {
         if(foundUser.isPresent()){
             return foundUser.get();
         }
-        throw new RuntimeException(""); //TODO Throw exception -> User not found
+        throw new RuntimeException("B"); //TODO Throw exception -> User not found B
     }
 }

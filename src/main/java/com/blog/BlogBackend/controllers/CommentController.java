@@ -23,12 +23,12 @@ public class CommentController {
     public List<CommentResponse> getCommentsByTitle(@RequestParam(name = "filter", required = false) String postTitle){
         return commentService.getCommentsByTitle(postTitle);
     }
-    @GetMapping("/user")
+    @GetMapping("/admin/getUsersComment")
     @ResponseBody
     public List<CommentResponse> getCommentByUser(@RequestParam(name = "comments", required = false) String email){
         return commentService.getCommentsByUser(email);
     }
-    @GetMapping
+    @GetMapping("admin/gelAllComments")
     public List<CommentResponse> getAllComments(){
         return commentService.getAllComments();
     }

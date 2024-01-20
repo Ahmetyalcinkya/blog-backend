@@ -1,11 +1,9 @@
 package com.blog.BlogBackend.dto.request;
 
-import com.blog.BlogBackend.entities.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
