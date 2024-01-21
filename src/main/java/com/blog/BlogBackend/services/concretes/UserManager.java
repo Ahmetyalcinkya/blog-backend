@@ -26,14 +26,12 @@ import java.util.stream.Collectors;
 public class UserManager implements UserService,UserDetailsService {
 
     private UserRepository userRepository;
-    private UserService userService;
     private ModelMapperService modelMapperService;
 
     @Autowired
-    public UserManager(UserRepository userRepository,ModelMapperService modelMapperService, UserService userService) {
+    public UserManager(UserRepository userRepository,ModelMapperService modelMapperService) {
         this.userRepository = userRepository;
         this.modelMapperService = modelMapperService;
-        this.userService = userService;
     }
 
     @Override
@@ -71,7 +69,7 @@ public class UserManager implements UserService,UserDetailsService {
 
     @Override
     public UserResponse deleteUser(long id) {
-        String email = userService.getAuthenticatedUser();
+        String email = getAuthenticatedUser();
         Optional<User> optionalUser = userRepository.findUserByEmail(email);
         if (optionalUser.isPresent()){
             if (optionalUser.get().getAuthority().getAuthority().equals("ADMIN")){

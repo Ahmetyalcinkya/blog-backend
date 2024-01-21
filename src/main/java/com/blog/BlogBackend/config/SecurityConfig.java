@@ -98,7 +98,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST,"/auth/**").permitAll();
 
                     auth.requestMatchers(HttpMethod.GET,"/comments/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST,"/comments/").hasAuthority("AUTHORITY_USER");
+                    auth.requestMatchers(HttpMethod.POST,"/comments/").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE,"/comments/**").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
                     auth.requestMatchers("/comments/admin/**").hasAuthority("AUTHORITY_ADMIN");
 
