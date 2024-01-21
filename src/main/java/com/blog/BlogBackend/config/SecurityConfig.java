@@ -109,8 +109,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/categories/admin/**").hasAuthority("AUTHORITY_ADMIN");
 
                     auth.requestMatchers(HttpMethod.GET,"/posts/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST,"/posts/**").hasAuthority("AUTHORITY_USER");
-                    auth.requestMatchers(HttpMethod.PUT,"/posts/**").hasAuthority("AUTHORITY_USER");
+                    auth.requestMatchers(HttpMethod.POST,"/posts/**").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT,"/posts/**").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE,"/posts/**").hasAnyAuthority("AUTHORITY_USER", "AUTHORITY_ADMIN");
                     auth.requestMatchers("/posts/admin/**").hasAuthority("AUTHORITY_ADMIN");
                     auth.anyRequest().authenticated();

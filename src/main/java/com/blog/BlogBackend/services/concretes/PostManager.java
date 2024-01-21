@@ -1,9 +1,7 @@
 package com.blog.BlogBackend.services.concretes;
 
-import com.blog.BlogBackend.dto.request.PostSaveRequest;
 import com.blog.BlogBackend.dto.request.PostUpdateRequest;
 import com.blog.BlogBackend.dto.response.PostResponse;
-import com.blog.BlogBackend.dto.response.UserResponse;
 import com.blog.BlogBackend.entities.Category;
 import com.blog.BlogBackend.entities.Post;
 import com.blog.BlogBackend.entities.User;
@@ -16,6 +14,7 @@ import com.blog.BlogBackend.services.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,37 +70,47 @@ public class PostManager implements PostService {
     }
 
     @Override
-    public PostResponse getPostByID(long id) { //TODO WARNING!!!!!
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("E")); //TODO Throw excepiton E
-        return modelMapperService.forResponse().map(post, PostResponse.class);
+    public Post getPostByID(long id) {
+        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("E")); //TODO Throw excepiton E
     }
 
     @Override
-    public PostResponse savePost(PostSaveRequest postSaveRequest) {
+    public PostResponse saveUpdatePost(PostUpdateRequest postUpdateRequest) {
+        LocalDateTime now = LocalDateTime.now();
         String email =  userService.getAuthenticatedUser();
         Optional<User> user = userRepository.findUserByEmail(email);
         if (user.isPresent()){
-            Category category = categoryService.getCategoryByID(postSaveRequest.getCategoryID());
-
-            Post post = modelMapperService.forRequest().map(postSaveRequest, Post.class);
+            Category category = categoryService.getCategoryByID(postUpdateRequest.getCategoryID());
+            Post post = modelMapperService.forRequest().map(postUpdateRequest, Post.class);
+            post.setId(postUpdateRequest.getId());
+            // find post by id if post not exist set created date if exist set update date
             post.setCategory(category);
+            if (post.getCreatedAt() == null){
+                post.setCreatedAt(now);
+            }else { //TODO UpdateAt not work !!!
+                post.setUpdateAt(now);
+            }
             post.setUser(user.get());
             postRepository.save(post);
             return modelMapperService.forResponse().map(post, PostResponse.class);
         }
-        throw new RuntimeException("G"); //TODO Throw exception G
+        throw new RuntimeException("L"); //TODO Throw exception L
     }
 
     @Override
-    public PostResponse updatePost(PostUpdateRequest postUpdateRequest) {
-        Post post = modelMapperService.forRequest().map(postUpdateRequest, Post.class);
-        postRepository.save(post);
-        return modelMapperService.forResponse().map(post, PostResponse.class);
-    }
-
-    @Override
-    public PostResponse deletePost(long id) { //TODO WARNING!!!!!
-
-        return null;
+    public PostResponse deletePost(long id) {
+        String email = userService.getAuthenticatedUser();
+        Optional<User> optionalUser = userRepository.findUserByEmail(email);
+        if(optionalUser.isPresent()){
+            List<Post> posts = postRepository.findPostsByUser(email);
+            for(Post post: posts){
+                if(post.getId() == id){
+                    postRepository.delete(post);
+                    return modelMapperService.forResponse().map(post, PostResponse.class);
+                }
+            }
+            throw new RuntimeException("O"); //TODO Throw exception -> Post not found O
+        }
+        throw new RuntimeException("P"); //TODO Throw exception -> User not authenticated P
     }
 }

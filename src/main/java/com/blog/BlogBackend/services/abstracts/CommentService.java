@@ -10,7 +10,7 @@ public interface CommentService {
 
     List<CommentResponse> getCommentsByTitle(String title);
     List<CommentResponse> getCommentsByUser(String email);
-    Comment getCommentByID(long id); //TODO WARNING!!!!!
+    Comment getCommentByID(long id);
     List<CommentResponse> getAllComments();
     CommentResponse saveComment(CommentRequest commentRequest);
     CommentResponse deleteComment(long id);

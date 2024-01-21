@@ -28,7 +28,7 @@ public class CommentController {
     public List<CommentResponse> getCommentByUser(@RequestParam(name = "comments", required = false) String email){
         return commentService.getCommentsByUser(email);
     }
-    @GetMapping("admin/gelAllComments")
+    @GetMapping("/admin/gelAllComments")
     public List<CommentResponse> getAllComments(){
         return commentService.getAllComments();
     }
@@ -36,7 +36,7 @@ public class CommentController {
     public CommentResponse saveComment(@RequestBody CommentRequest commentRequest){
         return commentService.saveComment(commentRequest);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteComment/{id}")
     public CommentResponse deleteComment(@PathVariable long id){
         return commentService.deleteComment(id);
     }

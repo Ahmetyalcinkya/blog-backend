@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostUpdateRequest { //TODO WARNING!!!!!
+public class PostUpdateRequest {
     private long id;
     private String title;
     private String content;

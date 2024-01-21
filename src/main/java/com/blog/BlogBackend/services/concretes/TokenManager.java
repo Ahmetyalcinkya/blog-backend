@@ -31,7 +31,7 @@ public class TokenManager implements TokenService {
 
         String authority = authentication.getAuthorities().stream().findFirst()
                 .map(GrantedAuthority::getAuthority)
-                .orElseThrow(() -> new RuntimeException("H")); //TODO Authority not found H
+                .orElseThrow(() -> new RuntimeException("H")); //TODO Throw exception -> Authority not found H
 
         Instant now = Instant.now();
 

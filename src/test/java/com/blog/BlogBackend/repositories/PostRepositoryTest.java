@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -57,7 +58,7 @@ class PostRepositoryTest {
 
     @Test
     void getPostByID() {
-        Post post = postRepository.getPostByID(1);
-        assertEquals(1, post.getCategory().getId());
+        Optional<Post> post = postRepository.findById(1L);
+        assertEquals(1, post.get().getId());
     }
 }

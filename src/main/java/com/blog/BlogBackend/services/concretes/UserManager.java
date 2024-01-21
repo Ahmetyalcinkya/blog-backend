@@ -16,18 +16,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserManager implements UserService,UserDetailsService {
 
     private UserRepository userRepository;
+    private UserService userService;
     private ModelMapperService modelMapperService;
 
     @Autowired
-    public UserManager(UserRepository userRepository,ModelMapperService modelMapperService) {
+    public UserManager(UserRepository userRepository,ModelMapperService modelMapperService, UserService userService) {
         this.userRepository = userRepository;
         this.modelMapperService = modelMapperService;
+        this.userService = userService;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class UserManager implements UserService,UserDetailsService {
 
     @Override
     public UserResponse getUserByID(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("I")); //TODO Throw exception I
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("I")); //TODO Throw exception -> User not found I
 
         return modelMapperService.forResponse().map(user, UserResponse.class);
     }
@@ -64,8 +67,22 @@ public class UserManager implements UserService,UserDetailsService {
     }
 
     @Override
-    public UserResponse deleteUser(long id) { //TODO WARNING!!!!!
-        return null;
+    public UserResponse deleteUser(long id) {
+        String email = userService.getAuthenticatedUser();
+        Optional<User> optionalUser = userRepository.findUserByEmail(email);
+        if (optionalUser.isPresent()){
+            if (optionalUser.get().getAuthority().getAuthority().equals("ADMIN")){
+                List<User> users = userRepository.findAll();
+                for(User user: users){
+                    if (user.getId() == id){
+                        userRepository.delete(user);
+                        return modelMapperService.forResponse().map(user, UserResponse.class);
+                    }
+                }
+            }
+            throw new RuntimeException("S"); //TODO Throw exception -> Access denied S
+        }
+        throw new RuntimeException("R"); //TODO Throw exception -> User not authenticated R
     }
 
     @Override
