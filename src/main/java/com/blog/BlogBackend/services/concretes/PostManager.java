@@ -5,13 +5,16 @@ import com.blog.BlogBackend.dto.response.PostResponse;
 import com.blog.BlogBackend.entities.Category;
 import com.blog.BlogBackend.entities.Post;
 import com.blog.BlogBackend.entities.User;
+import com.blog.BlogBackend.exceptions.BlogException;
 import com.blog.BlogBackend.repositories.PostRepository;
 import com.blog.BlogBackend.repositories.UserRepository;
 import com.blog.BlogBackend.services.abstracts.CategoryService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -71,7 +74,7 @@ public class PostManager implements PostService {
 
     @Override
     public Post getPostByID(long id) {
-        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("E")); //TODO Throw excepiton E
+        return postRepository.findById(id).orElseThrow(() -> new BlogException(Constants.POST_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -94,7 +97,7 @@ public class PostManager implements PostService {
             postRepository.save(post);
             return modelMapperService.forResponse().map(post, PostResponse.class);
         }
-        throw new RuntimeException("L"); //TODO Throw exception L
+        throw new BlogException(Constants.NOT_AUTHENTICATED, HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -109,8 +112,8 @@ public class PostManager implements PostService {
                     return modelMapperService.forResponse().map(post, PostResponse.class);
                 }
             }
-            throw new RuntimeException("O"); //TODO Throw exception -> Post not found O
+            throw new BlogException(Constants.POST_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
-        throw new RuntimeException("P"); //TODO Throw exception -> User not authenticated P
+        throw new BlogException(Constants.NOT_AUTHENTICATED, HttpStatus.FORBIDDEN);
     }
 }

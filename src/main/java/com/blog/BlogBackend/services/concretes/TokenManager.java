@@ -1,9 +1,12 @@
 package com.blog.BlogBackend.services.concretes;
 
 import com.blog.BlogBackend.entities.Token;
+import com.blog.BlogBackend.exceptions.BlogException;
 import com.blog.BlogBackend.repositories.TokenRepository;
 import com.blog.BlogBackend.services.abstracts.TokenService;
+import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -31,7 +34,7 @@ public class TokenManager implements TokenService {
 
         String authority = authentication.getAuthorities().stream().findFirst()
                 .map(GrantedAuthority::getAuthority)
-                .orElseThrow(() -> new RuntimeException("H")); //TODO Throw exception -> Authority not found H
+                .orElseThrow(() -> new BlogException(Constants.AUTHORITY_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         Instant now = Instant.now();
 

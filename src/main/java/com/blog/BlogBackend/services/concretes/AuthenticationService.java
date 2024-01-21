@@ -6,13 +6,16 @@ import com.blog.BlogBackend.entities.Authority;
 import com.blog.BlogBackend.entities.ConfirmationToken;
 import com.blog.BlogBackend.entities.Token;
 import com.blog.BlogBackend.entities.User;
+import com.blog.BlogBackend.exceptions.BlogException;
 import com.blog.BlogBackend.repositories.AuthorityRepository;
 import com.blog.BlogBackend.repositories.UserRepository;
 import com.blog.BlogBackend.services.abstracts.EmailService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.TokenService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -92,20 +95,20 @@ public class AuthenticationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken(emailToken)
                 .orElseThrow(() ->
-                        new RuntimeException("Confirmation Token not found!")); //TODO Throw exception -> Token not found
+                        new BlogException(Constants.TOKEN_NOT_FOUND, HttpStatus.NOT_FOUND));
         if (confirmationToken.getConfirmedAt() != null){
-            throw new RuntimeException("Email already confirmed!"); //TODO Throw exception -> Email confirmed
+            throw new BlogException(Constants.EMAIL_CONFIRMED, HttpStatus.BAD_REQUEST);
         }
         LocalDateTime expiresAt = confirmationToken.getExpiresAt();
 
         if(LocalDateTime.now().isAfter(expiresAt)){
-            throw new RuntimeException("Token expired!"); //TODO Throw exception -> Token expired
+            throw new BlogException(Constants.TOKEN_EXPIRED, HttpStatus.BAD_REQUEST);
         }
         confirmationTokenService.setConfirmedAt(emailToken);
 
         userService.enableUser(confirmationToken.getUser().getEmail());
 
-        return "Confirmed !"; //TODO Constants must be added
+        return Constants.EMAIL_CONFIRMED;
     }
     @Transactional
     public LoginResponse login(String email, String password){
@@ -125,7 +128,7 @@ public class AuthenticationService {
             return new LoginResponse(token);
         } catch (Exception ex){
             ex.printStackTrace();
-            throw new RuntimeException("A"); //TODO Throw exception -> User not found A
+            throw new BlogException(Constants.USER_NOT_FOUND,HttpStatus.NOT_FOUND);
         }
     }
     public User setUserToken(String email){
@@ -134,6 +137,6 @@ public class AuthenticationService {
         if(foundUser.isPresent()){
             return foundUser.get();
         }
-        throw new RuntimeException("B"); //TODO Throw exception -> User not found B
+        throw new BlogException(Constants.USER_NOT_FOUND,HttpStatus.NOT_FOUND);
     }
 }

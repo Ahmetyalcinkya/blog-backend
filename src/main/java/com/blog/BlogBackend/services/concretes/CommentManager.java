@@ -5,13 +5,16 @@ import com.blog.BlogBackend.dto.response.CommentResponse;
 import com.blog.BlogBackend.entities.Comment;
 import com.blog.BlogBackend.entities.Post;
 import com.blog.BlogBackend.entities.User;
+import com.blog.BlogBackend.exceptions.BlogException;
 import com.blog.BlogBackend.repositories.CommentRepository;
 import com.blog.BlogBackend.repositories.UserRepository;
 import com.blog.BlogBackend.services.abstracts.CommentService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,7 +60,7 @@ public class CommentManager implements CommentService {
 
     @Override
     public Comment getCommentByID(long id) {
-        return commentRepository.findById(id).orElseThrow(() -> new RuntimeException("C")); //TODO Throw exception C
+        return commentRepository.findById(id).orElseThrow(() -> new BlogException(Constants.COMMENT_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -83,7 +86,7 @@ public class CommentManager implements CommentService {
         commentRepository.save(comment);
         return modelMapperService.forResponse().map(comment, CommentResponse.class);
         }
-        throw new RuntimeException("L"); //TODO Throw exception -> User not authenticated L
+        throw new BlogException(Constants.NOT_AUTHENTICATED, HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -98,8 +101,8 @@ public class CommentManager implements CommentService {
                     return modelMapperService.forResponse().map(comment, CommentResponse.class);
                 }
             }
-            throw new RuntimeException("N"); //TODO Throw exception -> Comment not found N
+            throw new BlogException(Constants.COMMENT_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
-        throw new RuntimeException("M"); //TODO Throw exception -> User not authenticated M
+        throw new BlogException(Constants.NOT_AUTHENTICATED, HttpStatus.FORBIDDEN);
     }
 }

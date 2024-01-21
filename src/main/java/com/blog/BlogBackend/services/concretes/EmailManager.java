@@ -1,9 +1,12 @@
 package com.blog.BlogBackend.services.concretes;
 
+import com.blog.BlogBackend.exceptions.BlogException;
 import com.blog.BlogBackend.services.abstracts.EmailService;
+import com.blog.BlogBackend.utils.Constants;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -33,10 +36,9 @@ public class EmailManager implements EmailService {
             mimeMessageHelper.setText(body);
 
             javaMailSender.send(mimeMessage);
-            return "Email sent!"; //TODO Constants
+            return Constants.EMAIL_SENT;
         }catch (Exception ex){
-            //TODO Throw exception D
-            throw new RuntimeException("D");
+            throw new BlogException(Constants.EMAIL_NOT_SENT, HttpStatus.BAD_REQUEST);
         }
     }
 }

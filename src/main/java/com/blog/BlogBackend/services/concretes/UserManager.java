@@ -4,10 +4,13 @@ import com.blog.BlogBackend.dto.request.UserSaveRequest;
 import com.blog.BlogBackend.dto.response.UserResponse;
 import com.blog.BlogBackend.entities.Token;
 import com.blog.BlogBackend.entities.User;
+import com.blog.BlogBackend.exceptions.BlogException;
 import com.blog.BlogBackend.repositories.UserRepository;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,7 +46,7 @@ public class UserManager implements UserService,UserDetailsService {
 
     @Override
     public UserResponse getUserByID(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("I")); //TODO Throw exception -> User not found I
+        User user = userRepository.findById(id).orElseThrow(() -> new BlogException(Constants.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         return modelMapperService.forResponse().map(user, UserResponse.class);
     }
@@ -51,7 +54,7 @@ public class UserManager implements UserService,UserDetailsService {
     @Override
     public void getUserByEmail(String email) {
         boolean userExist = userRepository.findUserByEmail(email).isPresent();
-        if(userExist) throw new RuntimeException("J"); //TODO Throw exception -> User already exist J
+        if(userExist) throw new BlogException(Constants.USER_EXIST, HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -80,9 +83,9 @@ public class UserManager implements UserService,UserDetailsService {
                     }
                 }
             }
-            throw new RuntimeException("S"); //TODO Throw exception -> Access denied S
+            throw new BlogException(Constants.ACCESS_DENIED, HttpStatus.FORBIDDEN);
         }
-        throw new RuntimeException("R"); //TODO Throw exception -> User not authenticated R
+        throw new BlogException(Constants.NOT_AUTHENTICATED, HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -98,6 +101,6 @@ public class UserManager implements UserService,UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(username).orElseThrow(() -> new RuntimeException("K")); //TODO Throw exception -> User not valid K
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new BlogException(Constants.USER_NOT_VALID, HttpStatus.BAD_REQUEST));
     }
 }
