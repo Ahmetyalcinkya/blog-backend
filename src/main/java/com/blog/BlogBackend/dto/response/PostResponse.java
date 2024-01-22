@@ -25,4 +25,5 @@ public class PostResponse {
     private String userPicture;
     private String categoryTitle;
     private String categoryRating;
+    private String categoryImage;
 }
