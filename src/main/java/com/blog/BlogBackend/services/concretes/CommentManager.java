@@ -51,6 +51,14 @@ public class CommentManager implements CommentService {
     }
 
     @Override
+    public List<CommentResponse> findCommentsByPostId(long id) {
+        List<Comment> comments = commentRepository.findCommentsByPostId(id);
+
+        return comments.stream().map(comment ->
+                modelMapperService.forResponse().map(comment, CommentResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public List<CommentResponse> getCommentsByUser(String email) {
         List<Comment> comments = commentRepository.findCommentsByUser(email);
 

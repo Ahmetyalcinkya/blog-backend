@@ -23,6 +23,10 @@ public class CommentController {
     public List<CommentResponse> getCommentsByTitle(@RequestParam(name = "filter", required = false) String postTitle){
         return commentService.getCommentsByTitle(postTitle);
     }
+    @GetMapping("/post/{id}")
+    public List<CommentResponse> getCommentsByPostId(@PathVariable long id){
+        return commentService.findCommentsByPostId(id);
+    }
     @GetMapping("/admin/getUsersComment")
     @ResponseBody
     public List<CommentResponse> getCommentByUser(@RequestParam(name = "comments", required = false) String email){

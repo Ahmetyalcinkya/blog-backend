@@ -13,4 +13,6 @@ public class CommentResponse {
     private long id;
     private String content;
     private LocalDateTime createdAt;
+    private String userName;
+    private String userSurname;
 }

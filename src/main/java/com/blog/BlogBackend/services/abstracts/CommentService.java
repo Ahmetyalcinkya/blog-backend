@@ -9,6 +9,7 @@ import java.util.List;
 public interface CommentService {
 
     List<CommentResponse> getCommentsByTitle(String title);
+    List<CommentResponse> findCommentsByPostId(long id);
     List<CommentResponse> getCommentsByUser(String email);
     Comment getCommentByID(long id);
     List<CommentResponse> getAllComments();
