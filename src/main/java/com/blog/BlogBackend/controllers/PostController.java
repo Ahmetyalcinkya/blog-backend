@@ -3,6 +3,7 @@ package com.blog.BlogBackend.controllers;
 import com.blog.BlogBackend.dto.request.PostUpdateRequest;
 import com.blog.BlogBackend.dto.response.PostResponse;
 import com.blog.BlogBackend.entities.Post;
+import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,12 @@ import java.util.List;
 public class PostController {
 
     private PostService postService;
+    private ModelMapperService modelMapperService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, ModelMapperService modelMapperService) {
         this.postService = postService;
+        this.modelMapperService = modelMapperService;
     }
     @GetMapping("/title")
     @ResponseBody
@@ -29,17 +32,19 @@ public class PostController {
     public List<PostResponse> getUsersPosts(@RequestParam(name = "posts", required = false) String email){
         return postService.getUsersPosts(email);
     }
-    @GetMapping("/category/{id}")
-    public List<PostResponse> getPostsByCategoryID(@PathVariable long id){
-        return postService.getPostsByCategoryID(id);
-    }
     @GetMapping
+    public List<PostResponse> getPostsByCategoryID(@RequestParam(name = "category", required = false) long id,
+                                                   @RequestParam(name = "filter", required = false) String title){
+        return postService.getPostsByCategoryID(id); //TODO İki filtrenin birlikte çalıştıracağı bir query Repository katmanına yazılacak!!!
+    }
+    @GetMapping("/")
     public List<PostResponse> getAllPosts(){
         return postService.getAllPosts();
     }
-    @GetMapping("/admin/getPostsById/{id}")
-    public Post getPostByID(@PathVariable long id){
-        return postService.getPostByID(id);
+    @GetMapping("/{id}")
+    public PostResponse getPostByID(@PathVariable long id){
+        Post post = postService.getPostByID(id);
+        return modelMapperService.forResponse().map(post, PostResponse.class);
     }
     @PostMapping("/")
     public PostResponse savePost(@RequestBody PostUpdateRequest postUpdateRequest){

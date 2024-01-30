@@ -125,7 +125,8 @@ public class AuthenticationService {
             userService.updateUser(userToken, foundUser);
             tokenService.saveToken(userToken);
 
-            return new LoginResponse(token);
+            return new LoginResponse(foundUser.getName(), foundUser.getSurname(),
+                    foundUser.getEmail(),foundUser.getProfilePicture(), token, foundUser.getAuthority().getAuthority());
         } catch (Exception ex){
             ex.printStackTrace();
             throw new BlogException(Constants.USER_NOT_FOUND,HttpStatus.NOT_FOUND);
