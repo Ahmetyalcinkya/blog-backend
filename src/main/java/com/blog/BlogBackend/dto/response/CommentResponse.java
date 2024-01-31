@@ -15,4 +15,5 @@ public class CommentResponse {
     private LocalDateTime createdAt;
     private String userName;
     private String userSurname;
+    private String userProfilePicture;
 }
