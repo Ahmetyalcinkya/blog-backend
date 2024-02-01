@@ -16,4 +16,5 @@ public class CommentResponse {
     private String userName;
     private String userSurname;
     private String userProfilePicture;
+    private long userId;
 }
