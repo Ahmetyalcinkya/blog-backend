@@ -13,6 +13,7 @@ import com.blog.BlogBackend.services.abstracts.EmailService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.TokenService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.BlogValidations;
 import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,14 @@ public class AuthenticationService {
     }
     @Transactional
     public UserResponse register(String name, String surname, String email, String password, String profilePicture){
+
+        BlogValidations.checkString(name, "Name", 100);
+        BlogValidations.checkString(surname, "Surname", 100);
+        if(!BlogValidations.checkEmail(email)) throw new BlogException(Constants.EMAIL_NOT_VALID,HttpStatus.BAD_REQUEST);
+        if(!BlogValidations.checkPassword(password)) throw new BlogException(Constants.PASSWORD_NOT_VALID, HttpStatus.BAD_REQUEST);
+        if(!profilePicture.isEmpty()){
+            if(!BlogValidations.checkUserPicture(profilePicture)) throw new BlogException(Constants.PROFILE_PICTURE_NOT_VALID, HttpStatus.BAD_REQUEST);
+        }
 
         userService.getUserByEmail(email);
 

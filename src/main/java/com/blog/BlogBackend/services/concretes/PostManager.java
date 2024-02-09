@@ -12,6 +12,7 @@ import com.blog.BlogBackend.services.abstracts.CategoryService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.BlogValidations;
 import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,6 +80,9 @@ public class PostManager implements PostService {
 
     @Override
     public PostResponse saveUpdatePost(PostUpdateRequest postUpdateRequest) {
+        BlogValidations.checkString(postUpdateRequest.getTitle(), "Title", 200);
+        BlogValidations.checkContent(postUpdateRequest.getContent());
+
         LocalDateTime now = LocalDateTime.now();
         String email =  userService.getAuthenticatedUser();
         Optional<User> user = userRepository.findUserByEmail(email);

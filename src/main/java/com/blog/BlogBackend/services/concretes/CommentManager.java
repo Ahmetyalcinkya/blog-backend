@@ -12,6 +12,7 @@ import com.blog.BlogBackend.services.abstracts.CommentService;
 import com.blog.BlogBackend.services.abstracts.ModelMapperService;
 import com.blog.BlogBackend.services.abstracts.PostService;
 import com.blog.BlogBackend.services.abstracts.UserService;
+import com.blog.BlogBackend.utils.BlogValidations;
 import com.blog.BlogBackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,6 +82,8 @@ public class CommentManager implements CommentService {
 
     @Override
     public CommentResponse saveComment(CommentRequest commentRequest) {
+        BlogValidations.checkContent(commentRequest.getContent());
+
         String email = userService.getAuthenticatedUser();
         Post post = postService.getPostByID(commentRequest.getPostID());
         Optional<User> optionalUser = userRepository.findUserByEmail(email);
