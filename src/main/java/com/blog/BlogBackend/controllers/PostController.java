@@ -33,9 +33,17 @@ public class PostController {
         return postService.getUsersPosts(email);
     }
     @GetMapping
-    public List<PostResponse> getPostsByCategoryID(@RequestParam(name = "category", required = false) long id,
+    public List<PostResponse> getPostsByFilter(@RequestParam(name = "category", required = false) long id,
                                                    @RequestParam(name = "filter", required = false) String title){
-        return postService.getPostsByCategoryID(id); //TODO İki filtrenin birlikte çalıştıracağı bir query Repository katmanına yazılacak!!!
+        if(title == null && id != 0) {
+            return postService.getPostsByCategoryID(id);
+        } else if(id == 0 && title != null) {
+            return postService.getPostsByTitle(title);
+        }else if(id != 0 && title != null) {
+            return postService.getFilteredPosts(id, title);
+        }else {
+            return postService.getAllPosts();
+        }
     }
     @GetMapping("/")
     public List<PostResponse> getAllPosts(){

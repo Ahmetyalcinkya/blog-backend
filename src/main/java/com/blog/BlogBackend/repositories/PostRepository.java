@@ -23,4 +23,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT p.*, c.category_title, c.category_rating, u.name, u.surname, u.profile_picture FROM blog.post AS p " +
             "JOIN blog.category AS c ON p.category_id = c.id JOIN blog.user AS u ON p.user_id = u.id", nativeQuery = true)
     List<Post> getAllPosts();
+
+    @Query(value = "SELECT p.*, c.category_title, c.category_rating, u.name, u.surname, u.profile_picture FROM blog.post AS p " +
+            "JOIN blog.category AS c ON p.category_id = c.id JOIN blog.user AS u ON p.user_id = u.id WHERE p.id = :id AND p.post_title ILIKE %:title%", nativeQuery = true)
+    List<Post> getFilteredPosts(long id, String title);
 }

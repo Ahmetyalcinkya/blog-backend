@@ -120,4 +120,12 @@ public class PostManager implements PostService {
         }
         throw new BlogException(Constants.NOT_AUTHENTICATED, HttpStatus.FORBIDDEN);
     }
+
+    @Override
+    public List<PostResponse> getFilteredPosts(long id, String title) {
+        List<Post> posts = postRepository.getFilteredPosts(id, title);
+
+        return posts.stream().map(post ->
+                modelMapperService.forResponse().map(post, PostResponse.class)).collect(Collectors.toList());
+    }
 }

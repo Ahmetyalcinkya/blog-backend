@@ -16,4 +16,6 @@ public interface PostService {
     PostResponse saveUpdatePost(PostUpdateRequest postUpdateRequest);
     PostResponse deletePost(long id);
 
+    List<PostResponse> getFilteredPosts(long id, String title);
+
 }
