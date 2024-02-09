@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.enabled = TRUE WHERE u.email = :email")
     int enableUser(String email);
+
+    @Query(value = "SELECT u.* FROM blog.user AS u WHERE u.token_id = :id", nativeQuery = true)
+    Optional<User> findUserByTokenId(long id);
 }

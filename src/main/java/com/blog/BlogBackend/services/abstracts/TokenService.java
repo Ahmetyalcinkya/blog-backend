@@ -7,4 +7,5 @@ public interface TokenService {
 
     String generateJwtToken(Authentication authentication);
     Token saveToken(Token jwtToken);
+    Token getByToken(String token);
 }

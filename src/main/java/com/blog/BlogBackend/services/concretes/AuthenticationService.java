@@ -142,6 +142,20 @@ public class AuthenticationService {
             throw new BlogException(Constants.USER_NOT_FOUND,HttpStatus.NOT_FOUND);
         }
     }
+    @Transactional
+    public LoginResponse verifyToken(String token){
+        LocalDateTime now = LocalDateTime.now();
+        Token foundToken = tokenService.getByToken(token);
+        User foundUser = userRepository.findUserByTokenId(foundToken.getId()).orElseThrow(
+                () -> new BlogException(Constants.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        if(now.isBefore(foundToken.getExpiryDate())){
+            return new LoginResponse(foundUser.getName(), foundUser.getSurname(),
+                    foundUser.getEmail(),foundUser.getProfilePicture(), token,
+                    foundUser.getAuthority().getAuthority(), foundUser.getId(), foundUser.getRegistrationDate());
+        }else {
+            throw new BlogException(Constants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+        }
+    }
     public User setUserToken(String email){
         Optional<User> foundUser = userRepository.findUserByEmail(email);
 

@@ -28,6 +28,10 @@ public class AuthorizationController {
     public String confirm(@RequestParam(name = "emailToken") String emailToken){
         return authenticationService.confirmationEmailToken(emailToken);
     }
+    @PostMapping("/verify")
+    public LoginResponse verify(@RequestBody String token){
+        return authenticationService.verifyToken(token);
+    }
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest){
         return authenticationService.login(loginRequest.email(), loginRequest.password());

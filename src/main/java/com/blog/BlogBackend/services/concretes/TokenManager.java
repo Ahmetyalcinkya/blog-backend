@@ -52,4 +52,9 @@ public class TokenManager implements TokenService {
     public Token saveToken(Token jwtToken) {
         return tokenRepository.save(jwtToken);
     }
+
+    @Override
+    public Token getByToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
 }
