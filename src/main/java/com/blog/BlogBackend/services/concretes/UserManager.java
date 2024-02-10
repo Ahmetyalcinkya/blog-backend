@@ -76,6 +76,9 @@ public class UserManager implements UserService,UserDetailsService {
                 List<User> users = userRepository.findAll();
                 for(User user: users){
                     if (user.getId() == id){
+                        if(user.getAuthority().getAuthority().equals("ADMIN")){
+                            throw new BlogException(Constants.CANNOT_DELETE_AN_ADMIN, HttpStatus.FORBIDDEN);
+                        }
                         userRepository.delete(user);
                         return modelMapperService.forResponse().map(user, UserResponse.class);
                     }

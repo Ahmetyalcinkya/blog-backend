@@ -19,4 +19,5 @@ public class Constants {
     public static String PASSWORD_NOT_VALID = "Please enter a valid password! " +
             "(Password must include Uppercase, Lowercase, Number, Special Character)";
     public static String PROFILE_PICTURE_NOT_VALID = "Please check your url! It's not a valid url!";
+    public static String CANNOT_DELETE_AN_ADMIN = "You cannot delete admin user!";
 }
